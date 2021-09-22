@@ -1,6 +1,4 @@
 # coding=utf-8
-
-
 class Date:
     def __init__(self, year, month, day, n):
         self.year = year
@@ -8,27 +6,15 @@ class Date:
         self.day = day
         self.n = n
 
-    def __gt__(self, rhs):
-        if self.year > rhs.year:
-            return rhs.year
-        elif self.year == rhs.year and self.month > rhs.month:
-            return rhs.month
-        elif self.year == rhs.year and self.month == rhs.month and self.day > rhs.day:
-            return rhs.day
-
-    def __lt__(self, rhs):
-        if self.year < rhs.year:
-            return rhs.year
-        elif self.year == rhs.year and self.month < rhs.month:
-            return rhs.month
-        elif self.year == rhs.year and self.month == rhs.month and self.day < rhs.day:
-            return rhs.day
-
     def lastDayOfTheMonth(self):
         if self.month in [1, 3, 5, 7, 8, 10, 12]:
-            return 30
-        elif self.month in [2, 4, 6, 9, 11]:
             return 31
+        elif self.month in [4, 6, 9, 11]:
+            return 30
+        elif self.month == 2:
+            if self.year % 4 == 0 and (self.year % 100 != 0 or self.year % 400 == 0):
+                return 29
+            return 28
 
     def increment(self):
         if self.day == self.lastDayOfTheMonth():
@@ -48,7 +34,7 @@ class Date:
         return self
 
     def __str__(self):
-        return f"{self.year}/{self.month}/{self.day}\t {self.n}일 후 "
+        return f"{self.year}/{self.month}/{self.day}\t "
 
 
 def main():
@@ -61,8 +47,8 @@ def main():
         date = [int(i) for i in line.split()]
         lst.append(Date(date[0], date[1], date[2], date[3]))
     for i in range(len(lst)):
-        lst[i].incrementN()
-        print(lst[i])
+        print(lst[i], lst[i].n, "일 후\t", "==>\t", end="")
+        print(lst[i].incrementN())
 
     inFile.close()
 

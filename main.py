@@ -93,7 +93,7 @@ def find_min_max(lst):
 
 
 def main():
-    inFile = open("input2.txt", "r")
+    inFile = open("실습2/input2.txt", "r")
     lst = []
     while True:
         line = inFile.readline()
