@@ -8,6 +8,7 @@ class Set:
         else:
             return False
 
+
     def insert(self, elem):
         if elem not in self.items:
             self.items.append(elem)
