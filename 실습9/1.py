@@ -15,7 +15,7 @@ class BTree:
         b = BTNode(10, None, d)
         e = BTNode(25)
         f = BTNode(55)
-        c = BTNode(30)
+        c = BTNode(30, e, f)
         self.root = BTNode(20, b, c)
 
     def inorder(self):
@@ -23,47 +23,115 @@ class BTree:
         print()
 
     def inorder1(self, node):
-        if self.root is not None:
-            self.inorder1(self.left)
-            print(self.data, end=" ")
-            self.inorder1(self.right)
+        if node is not None:
+            self.inorder1(node.left)
+            print(node.item, end=" ")
+            self.inorder1(node.right)
 
     def preorder(self):
-        if self.root is not None:
-            print(self.root.item, end=" ")
-            self.preorder(self.root.left)
-            self.preorder(self.root.right)
+        self.preorder1(self.root)
+        print()
+
+    def preorder1(self, node):
+        if node is not None:
+            print(node.item, end=" ")
+            self.preorder1(node.left)
+            self.preorder1(node.right)
 
     def postorder(self):
-        self.postorder(self.root.left)
-        self.postorder(self.root.right)
-        print(self.root.item, end=" ")
+        self.postorder1(self.root)
+        print()
+
+    def RVL(self):
+        self.RVL1(self.root)
+        print()
+
+    def RVL1(self, node):
+        if node is not None:
+            self.RVL1(node.right)
+            print(f"{node.item}", end="")
+            self.check_left_right(node)
+            self.RVL1(node.left)
+
+    def check_left_right(self, node):
+        left = False
+        right = False
+        if node.left and node.right:
+            left = right = True
+            print(",L,R")
+            return left, right
+        elif node.left and not node.right:
+            left = True
+            right = False
+            print(",L")
+            return left, right
+        elif not node.left and node.right:
+            right = True
+            left = False
+            print(",R")
+            return left, right
+        else:
+            print("")
+            return left, right
+
+    def check_left_right1(self, node):
+        left = False
+        right = False
+        if node.left and node.right:
+            left = right = True
+            return left, right
+        elif node.left and not node.right:
+            left = True
+            right = False
+            return left, right
+        elif not node.left and node.right:
+            right = True
+            left = False
+            return left, right
+        else:
+            return left, right
+
+    def postorder1(self, node):
+        if node is not None:
+            self.postorder1(node.left)
+            self.postorder1(node.right)
+            print(node.item, end=" ")
 
     def nodeCount(self):
-        if self.root is None:
+        return self.nodeCount1(self.root)
+
+    def nodeCount1(self, node):
+        if node is None:
             return 0
-        else:
-            return 1 + self.nodeCount(self.root.left) + self.nodeCount(self.root.right)
+        return 1 + self.nodeCount1(node.left) + self.nodeCount1(node.right)
 
     def leafCount(self):
-        if self.root is None:
+        return self.leafCount1(self.root)
+
+    def leafCount1(self, node):
+        if node is None:
             return 0
-        elif self.left.item is None and self.rigth.item is None:
+        if node.left is None and node.right is None:
             return 1
-        else:
-            return self.nodeCount(self.root.left) + self.nodeCount(self.root.right)
+        return self.leafCount1(node.left) + self.leafCount1(node.right)
 
     def height(self):
-        if self.root is None:
+        return self.height1(self.root)
+
+    def height1(self, node):
+        if node is None:
             return 0
-        hLeft = self.height(self.root.left)
-        hRight = self.height(self.root.right)
+        hLeft = self.height1(node.left)
+        hRight = self.height1(node.right)
         if hLeft > hRight:
             return hLeft + 1
         else:
             return hRight + 1
-    # def print(self):
-        
+
+    def print(self):
+        left, right = self.check_left_right1(self.root)
+        self.RVL1(self.root)
+
 
 def main():
     bt = BTree()
@@ -93,5 +161,6 @@ def main():
             bt.print()
         elif command == 'q':
             break
+
 
 main()
